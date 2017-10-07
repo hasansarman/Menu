@@ -1,4 +1,6 @@
-<?php namespace Modules\Menu\Services;
+<?php
+
+namespace Modules\Menu\Services;
 
 use Illuminate\Support\Facades\URL;
 
@@ -45,24 +47,24 @@ class MenuRenderer
     {
         $this->menu .= '<ol class="dd-list">';
         foreach ($items as $item) {
-            $this->menu .= "<li class=\"dd-item\" data-id=\"{$item->id}\">";
-            $editLink = URL::route('dashboard.menuitem.edit', [$this->menuId, $item->id]);
+            $this->menu .= "<li class=\"dd-item\" data-id=\"{$item->ID}\">";
+            $editLink = URL::route('dashboard.menuitem.edit', [$this->menuId, $item->ID]);
             $style = $item->isRoot() ? 'none' : 'inline';
             $this->menu .= <<<HTML
 <div class="btn-group" role="group" aria-label="Action buttons" style="display: {$style}">
     <a class="btn btn-sm btn-info" style="float:left;" href="{$editLink}">
         <i class="fa fa-pencil"></i>
     </a>
-    <a class="btn btn-sm btn-danger jsDeleteMenuItem" style="float:left; margin-right: 15px;" data-item-id="{$item->id}">
+    <a class="btn btn-sm btn-danger jsDeleteMenuItem" style="float:left; margin-right: 15px;" data-item-ID="{$item->ID}">
        <i class="fa fa-times"></i>
     </a>
 </div>
 HTML;
             $handleClass = $item->isRoot() ? 'dd-handle-root' : 'dd-handle';
-            if (isset($item->icon) && $item->icon != '') {
-                $this->menu .= "<div class=\"{$handleClass}\"><i class=\"{$item->icon}\" ></i> {$item->title}</div>";
+            if (isset($item->ICON) && $item->ICON != '') {
+                $this->menu .= "<div class=\"{$handleClass}\"><i class=\"{$item->ICON}\" ></i> {$item->TITLE}</div>";
             } else {
-                $this->menu .= "<div class=\"{$handleClass}\">{$item->title}</div>";
+                $this->menu .= "<div class=\"{$handleClass}\">{$item->TITLE}</div>";
             }
 
             if ($this->hasChildren($item)) {

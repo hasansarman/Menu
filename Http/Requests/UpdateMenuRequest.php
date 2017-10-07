@@ -1,4 +1,6 @@
-<?php namespace Modules\Menu\Http\Requests;
+<?php
+
+namespace Modules\Menu\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -6,11 +8,11 @@ class UpdateMenuRequest extends FormRequest
 {
     public function rules()
     {
-        $menu = $this->route()->getParameter('menu');
+        $menu = $this->route()->parameter('menu');
 
         return [
-            'name' => 'required',
-            'primary' => "unique:menu__menus,primary,{$menu->id}",
+            'NAME' => 'required',
+            'PRIMARY' => "unique:menus,PRIMARY,{$menu->ID}",
         ];
     }
 

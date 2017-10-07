@@ -1,18 +1,24 @@
-<?php namespace Modules\Menu\Tests;
+<?php
+
+namespace Modules\Menu\Tests;
 
 use Faker\Factory;
-use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Maatwebsite\Sidebar\SidebarServiceProvider;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Mcamara\LaravelLocalization\LaravelLocalizationServiceProvider;
 use Modules\Core\Providers\CoreServiceProvider;
+use Modules\Menu\Providers\EventServiceProvider;
 use Modules\Menu\Providers\MenuServiceProvider;
 use Modules\Menu\Repositories\MenuItemRepository;
 use Modules\Menu\Repositories\MenuRepository;
+use Modules\Page\Providers\PageServiceProvider;
+use Modules\Setting\Providers\SettingServiceProvider;
+use Modules\Setting\Repositories\SettingRepository;
+use Modules\Tag\Providers\TagServiceProvider;
+use Nwidart\Modules\LaravelModulesServiceProvider;
 use Orchestra\Testbench\TestCase;
-use Pingpong\Modules\ModulesServiceProvider;
 
 abstract class BaseMenuTest extends TestCase
 {
@@ -36,13 +42,20 @@ abstract class BaseMenuTest extends TestCase
 
         $this->menu = app(MenuRepository::class);
         $this->menuItem = app(MenuItemRepository::class);
+        app(SettingRepository::class)->createOrUpdate([
+            'core::locales' => ['en', 'fr',],
+        ]);
     }
 
     protected function getPackageProviders($app)
     {
         return [
-            ModulesServiceProvider::class,
+            LaravelModulesServiceProvider::class,
             CoreServiceProvider::class,
+            TagServiceProvider::class,
+            PageServiceProvider::class,
+            SettingServiceProvider::class,
+            EventServiceProvider::class,
             MenuServiceProvider::class,
             LaravelLocalizationServiceProvider::class,
             SidebarServiceProvider::class,
@@ -71,22 +84,29 @@ abstract class BaseMenuTest extends TestCase
 
     private function resetDatabase()
     {
-        // Relative to the testbench app folder: vendors/orchestra/testbench/src/fixture
-        $migrationsPath = 'Database/Migrations';
-        $artisan = $this->app->make(Kernel::class);
         // Makes sure the migrations table is created
-        $artisan->call('migrate', [
+        $this->artisan('migrate', [
             '--database' => 'sqlite',
-            '--path'     => $migrationsPath,
         ]);
         // We empty all tables
-        $artisan->call('migrate:reset', [
+        $this->artisan('migrate:reset', [
             '--database' => 'sqlite',
         ]);
         // Migrate
-        $artisan->call('migrate', [
+        $this->artisan('migrate', [
             '--database' => 'sqlite',
-            '--path'     => $migrationsPath,
+        ]);
+        $this->artisan('migrate', [
+            '--database' => 'sqlite',
+            '--path'     => 'Modules/Page/Database/Migrations',
+        ]);
+        $this->artisan('migrate', [
+            '--database' => 'sqlite',
+            '--path'     => 'Modules/Tag/Database/Migrations',
+        ]);
+        $this->artisan('migrate', [
+            '--database' => 'sqlite',
+            '--path'     => 'Modules/Setting/Database/Migrations',
         ]);
     }
 

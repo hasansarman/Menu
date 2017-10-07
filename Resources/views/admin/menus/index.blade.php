@@ -38,19 +38,19 @@
                         <?php foreach ($menus as $menu): ?>
                             <tr>
                                 <td>
-                                    <a href="{{ URL::route('admin.menu.menu.edit', [$menu->id]) }}">
-                                        {{ $menu->name }}
+                                    <a href="{{ URL::route('admin.menu.menu.edit', [$menu->ID]) }}">
+                                        {{ $menu->NAME }}
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{{ URL::route('admin.menu.menu.edit', [$menu->id]) }}">
-                                        {{ $menu->title }}
+                                    <a href="{{ URL::route('admin.menu.menu.edit', [$menu->ID]) }}">
+                                        {{ $menu->TITLE }}
                                     </a>
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="{{ URL::route('admin.menu.menu.edit', [$menu->id]) }}" class="btn btn-default btn-flat"><i class="glyphicon glyphicon-pencil"></i></a>
-                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#confirmation-{{ $menu->id }}"><i class="glyphicon glyphicon-trash"></i></button>
+                                        <a href="{{ URL::route('admin.menu.menu.edit', [$menu->ID]) }}" class="btn btn-default btn-flat"><i class="glyphicon glyphicon-pencil"></i></a>
+                                        <button class="btn btn-danger btn-flat" data-toggle="modal" data-target="#confirmation-{{ $menu->ID }}"><i class="glyphicon glyphicon-trash"></i></button>
                                     </div>
                                 </td>
                             </tr>
@@ -74,7 +74,7 @@
 <?php if (isset($menus)): ?>
     <?php foreach ($menus as $menu): ?>
     <!-- Modal -->
-    <div class="modal fade modal-danger" id="confirmation-{{ $menu->id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade modal-danger" id="confirmation-{{ $menu->ID }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -86,7 +86,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline btn-flat" data-dismiss="modal">{{ trans('core::core.button.cancel') }}</button>
-                    {!! Form::open(['route' => ['admin.menu.menu.destroy', $menu->id], 'method' => 'delete', 'class' => 'pull-left']) !!}
+                    {!! Form::open(['route' => ['admin.menu.menu.destroy', $menu->ID], 'method' => 'delete', 'class' => 'pull-left']) !!}
                         <button type="submit" class="btn btn-outline btn-flat"><i class="glyphicon glyphicon-trash"></i> {{ trans('core::core.button.delete') }}</button>
                     {!! Form::close() !!}
                 </div>
@@ -107,7 +107,7 @@
     </dl>
 @stop
 
-@section('scripts')
+@push('js-stack')
 <?php $locale = App::getLocale(); ?>
 <script type="text/javascript">
     $( document ).ready(function() {
@@ -132,4 +132,4 @@
         });
     });
 </script>
-@stop
+@endpush

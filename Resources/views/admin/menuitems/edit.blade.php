@@ -11,36 +11,20 @@
 </ol>
 @stop
 
-@section('styles')
-@stop
-
 @section('content')
-{!! Form::open(['route' => ['dashboard.menuitem.update', $menu->id, $menuItem->id], 'method' => 'put']) !!}
+{!! Form::open(['route' => ['dashboard.menuitem.update', $menu->ID, $menuItem->ID], 'method' => 'put']) !!}
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-9">
         <div class="box box-primary">
             <div class="box-header">
                 <h3 class="box-title">{{ trans('core::core.title.translatable fields') }}</h3>
             </div>
             <div class="box-body">
                 <div class="nav-tabs-custom">
-                    <ul class="nav nav-tabs">
-                        <?php $i = 0; ?>
-                        <?php foreach (LaravelLocalization::getSupportedLocales() as $locale => $language): ?>
-                            <?php $i++; ?>
-                            <li class="{{ App::getLocale() == $locale ? 'active' : '' }}">
-                                <a href="#tab_{{ $i }}" data-toggle="tab">{{ trans('core::core.tab.'. strtolower($language['name'])) }}</a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+
                     <div class="tab-content">
-                        <?php $i = 0; ?>
-                        <?php foreach (LaravelLocalization::getSupportedLocales() as $locale => $language): ?>
-                            <?php $i++; ?>
-                            <div class="tab-pane {{ App::getLocale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                                @include('menu::admin.menuitems.partials.edit-trans-fields', ['lang' => $locale])
-                            </div>
-                        <?php endforeach; ?>
+                                 @include('menu::admin.menuitems.partials.edit-trans-fields', ['lang' => ''])
+
                     </div>
                 </div>
             </div>
@@ -55,8 +39,31 @@
         </div>
         <div class="box-footer">
             <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.update') }}</button>
-            <button class="btn btn-default btn-flat" name="button" type="reset">{{ trans('core::core.button.reset') }}</button>
-            <a class="btn btn-danger pull-right btn-flat" href="{{ URL::route('admin.menu.menu.edit', [$menu->id])}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+            <a class="btn btn-danger pull-right btn-flat" href="{{ URL::route('admin.menu.menu.edit', [$menu->ID])}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="box box-primary">
+            <div class="box-header">
+                <h3 class="box-title">{{ trans('menu::menu-items.link-type.link type') }}</h3>
+            </div>
+            <div class="box-body">
+                <div class="radio">
+                    <input type="radio" id="link-page" name="LINK_TYPE"
+                           value="page"{{ $menuItem->LINK_TYPE === 'page' ? ' checked' : '' }}>
+                    <label for="link-page">{{ trans('menu::menu-items.link-type.page') }}</label>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="link-internal" name="LINK_TYPE"
+                           value="internal"{{ $menuItem->LINK_TYPE === 'internal' ? ' checked' : '' }}>
+                    <label for="link-internal">{{ trans('menu::menu-items.link-type.internal') }}</label>
+                </div>
+                <div class="radio">
+                    <input type="radio" id="link-external" name="LINK_TYPE"
+                           value="external"{{ $menuItem->LINK_TYPE === 'external' ? ' checked' : '' }}>
+                    <label for="link-external">{{ trans('menu::menu-items.link-type.external') }}</label>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -73,12 +80,12 @@
     </dl>
 @stop
 
-@section('scripts')
+@push('js-stack')
 <script>
 $( document ).ready(function() {
     $(document).keypressAction({
         actions: [
-            { key: 'b', route: "<?= route('admin.menu.menu.edit', [$menu->id]) ?>" }
+            { key: 'b', route: "<?= route('admin.menu.menu.edit', [$menu->ID]) ?>" }
         ]
     });
     $('input[type="checkbox"].flat-blue, input[type="radio"].flat-blue').iCheck({
@@ -94,6 +101,16 @@ $( document ).ready(function() {
             input = '<input type="hidden" name="' + name + '" value="0" />';
         $(this).parent().append(input);
     });
+
+    $('.link-type-depended').hide();
+    $('.link-{{ $menuItem->link_type }}').fadeIn();
+    $('[name="link_type"]').iCheck({
+        checkboxClass: 'icheckbox_minimal',
+        radioClass: 'iradio_flat-blue'
+    }).on('ifChecked',function(){
+        $('.link-type-depended').hide();
+        $('.link-'+$(this).val()).fadeIn();
+    });
 });
 </script>
-@stop
+@endpush

@@ -1,4 +1,6 @@
-<?php namespace Modules\Menu\Events\Handlers;
+<?php
+
+namespace Modules\Menu\Events\Handlers;
 
 use Modules\Menu\Events\MenuItemWasCreated;
 use Modules\Menu\Repositories\MenuItemRepository;
@@ -17,7 +19,7 @@ class MakeMenuItemChildOfRoot
 
     public function handle(MenuItemWasCreated $event)
     {
-        $root = $this->menuItem->getRootForMenu($event->menuItem->menu_id);
+        $root = $this->menuItem->getRootForMenu($event->menuItem->MENU_ID);
 
         if (! $this->isRoot($event->menuItem)) {
             $event->menuItem->makeChildOf($root);
@@ -31,6 +33,6 @@ class MakeMenuItemChildOfRoot
      */
     private function isRoot($menuItem)
     {
-        return (bool) $menuItem->is_root;
+        return (bool) $menuItem->IS_ROOT;
     }
 }

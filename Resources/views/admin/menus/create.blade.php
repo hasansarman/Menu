@@ -11,9 +11,6 @@
 </ol>
 @stop
 
-@section('styles')
-@stop
-
 @section('content')
 {!! Form::open(['route' => ['admin.menu.menu.store'], 'method' => 'post']) !!}
 <div class="row">
@@ -24,24 +21,8 @@
             </div>
             <div class="box-body">
                 <div class="nav-tabs-custom">
-                    <ul class="nav nav-tabs">
-                        <?php $i = 0; ?>
-                        <?php foreach (LaravelLocalization::getSupportedLocales() as $locale => $language): ?>
-                            <?php $i++; ?>
-                            <li class="{{ App::getLocale() == $locale ? 'active' : '' }}">
-                                <a href="#tab_{{ $i }}" data-toggle="tab">{{ trans('core::core.tab.'. strtolower($language['name'])) }}</a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                    <div class="tab-content">
-                        <?php $i = 0; ?>
-                        <?php foreach (LaravelLocalization::getSupportedLocales() as $locale => $language): ?>
-                            <?php $i++; ?>
-                            <div class="tab-pane {{ App::getLocale() == $locale ? 'active' : '' }}" id="tab_{{ $i }}">
-                                @include('menu::admin.menus.partials.create-trans-fields', ['lang' => $locale])
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
+                        @include('menu::admin.menus.partials.create-trans-fields', ['lang' => ''])
+
                 </div>
             </div>
         </div>
@@ -55,7 +36,6 @@
         </div>
         <div class="box-footer">
             <button type="submit" class="btn btn-primary btn-flat">{{ trans('core::core.button.create') }}</button>
-            <button class="btn btn-default btn-flat" name="button" type="reset">{{ trans('core::core.button.reset') }}</button>
             <a class="btn btn-danger pull-right btn-flat" href="{{ URL::route('admin.menu.menu.index')}}"><i class="fa fa-times"></i> {{ trans('core::core.button.cancel') }}</a>
         </div>
     </div>
@@ -73,7 +53,7 @@
     </dl>
 @stop
 
-@section('scripts')
+@push('js-stack')
 <script>
 $( document ).ready(function() {
     $(document).keypressAction({
@@ -87,4 +67,4 @@ $( document ).ready(function() {
     });
 });
 </script>
-@stop
+@endpush

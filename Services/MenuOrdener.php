@@ -1,4 +1,6 @@
-<?php namespace Modules\Menu\Services;
+<?php
+
+namespace Modules\Menu\Services;
 
 use Modules\Menu\Entities\Menuitem;
 use Modules\Menu\Repositories\MenuItemRepository;
@@ -24,7 +26,7 @@ class MenuOrdener
     public function handle($data)
     {
         $data = $this->convertToArray(json_decode($data));
-
+print_r($data);
         foreach ($data as $position => $item) {
             $this->order($position, $item);
         }
@@ -37,7 +39,7 @@ class MenuOrdener
      */
     private function order($position, $item)
     {
-        $menuItem = $this->menuItemRepository->find($item['id']);
+        $menuItem = $this->menuItemRepository->find($item['ID']);
         if (0 === $position && false === $menuItem->isRoot()) {
             return;
         }
@@ -56,9 +58,9 @@ class MenuOrdener
     private function handleChildrenForParent(Menuitem $parent, array $children)
     {
         foreach ($children as $position => $item) {
-            $menuItem = $this->menuItemRepository->find($item['id']);
+            $menuItem = $this->menuItemRepository->find($item['ID']);
             $this->savePosition($menuItem, $position);
-            $this->makeItemChildOf($menuItem, $parent->id);
+            $this->makeItemChildOf($menuItem, $parent->ID);
 
             if ($this->hasChildren($item)) {
                 $this->handleChildrenForParent($menuItem, $item['children']);
@@ -73,7 +75,8 @@ class MenuOrdener
      */
     private function savePosition($menuItem, $position)
     {
-        $this->menuItemRepository->update($menuItem, compact('position'));
+      $POSITION=$position;
+        $this->menuItemRepository->update($menuItem, compact('POSITION'));
     }
 
     /**
@@ -95,7 +98,7 @@ class MenuOrdener
      */
     private function makeItemChildOf($item, $parent_id)
     {
-        $this->menuItemRepository->update($item, compact('parent_id'));
+        $this->menuItemRepository->update($item, compact('PARENT_ID'));
     }
 
     /**

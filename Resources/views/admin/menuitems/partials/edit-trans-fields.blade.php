@@ -1,29 +1,29 @@
-<div class='form-group{{ $errors->has("{$lang}[title]") ? ' has-error' : '' }}'>
-    {!! Form::label("{$lang}[title]", trans('menu::menu.form.title')) !!}
-    <?php $old = $menuItem->hasTranslation($lang) ? $menuItem->translate($lang)->title : '' ?>
-    {!! Form::text("{$lang}[title]", Input::old("{$lang}[title]", $old), ['class' => 'form-control', 'placeholder' => trans('menu::menu.form.title')]) !!}
-    {!! $errors->first("{$lang}[title]", '<span class="help-block">:message</span>') !!}
+<div class='form-group{{ $errors->has("TITLE") ? ' has-error' : '' }}'>
+    {!! Form::label("TITLE", trans('menu::menu.form.title')) !!}
+    <?php $old = $menuItem->TITLE; ?>
+    {!! Form::text("TITLE", old("TITLE", $old), ['class' => 'form-control', 'placeholder' => trans('menu::menu.form.title')]) !!}
+    {!! $errors->first("TITLE", '<span class="help-block">:message</span>') !!}
 </div>
-<div class="form-group">
-    {!! Form::label("{$lang}[uri]", trans('menu::menu.form.uri')) !!}
-    <div class='input-group{{ $errors->has("{$lang}[uri]") ? ' has-error' : '' }}'>
-        <span class="input-group-addon">/{{ $lang }}/</span>
-        <?php $old = $menuItem->hasTranslation($lang) ? $menuItem->translate($lang)->uri : '' ?>
-        {!! Form::text("{$lang}[uri]", Input::old("{$lang}[uri]", $old), ['class' => 'form-control', 'placeholder' => trans('menu::menu.form.uri')]) !!}
-        {!! $errors->first("{$lang}[uri]", '<span class="help-block">:message</span>') !!}
+<div class="form-group link-type-depended link-internal">
+    {!! Form::label("URI", trans('menu::menu.form.uri')) !!}
+    <div class='input-group{{ $errors->has("URI") ? ' has-error' : '' }}'>
+        <span class="input-group-addon">/-/</span>
+        <?php $old = $menuItem->URI; ?>
+        {!! Form::text("URI", old("URI", $old), ['class' => 'form-control', 'placeholder' => trans('menu::menu.form.uri')]) !!}
+        {!! $errors->first("URI", '<span class="help-block">:message</span>') !!}
     </div>
 </div>
-<div class="form-group{{ $errors->has("{$lang}[url]") ? ' has-error' : '' }}">
-    {!! Form::label("{$lang}[url]", trans('menu::menu.form.url')) !!}
-    <?php $old = $menuItem->hasTranslation($lang) ? $menuItem->translate($lang)->url : '' ?>
-    {!! Form::text("{$lang}[url]", Input::old("{$lang}[url]", $old), ['class' => 'form-control', 'placeholder' => trans('menu::menu.form.url')]) !!}
-    {!! $errors->first("{$lang}[url]", '<span class="help-block">:message</span>') !!}
+<div class="form-group{{ $errors->has("URL") ? ' has-error' : '' }} link-type-depended link-external">
+    {!! Form::label("URL", trans('menu::menu.form.url')) !!}
+    <?php $old = $menuItem->URL; ?>
+    {!! Form::text("URL", old("URL", $old), ['class' => 'form-control', 'placeholder' => trans('menu::menu.form.url')]) !!}
+    {!! $errors->first("URL", '<span class="help-block">:message</span>') !!}
 </div>
 <div class="checkbox">
-    <?php $old = $menuItem->hasTranslation($lang) ? $menuItem->translate($lang)->status : false ?>
-    <label for="{{$lang}}[status]">
-        <input id="{{$lang}}[status]"
-                name="{{$lang}}[status]"
+    <?php $old = $menuItem->STATUS; ?>
+    <label for="STATUS">
+        <input id="STATUS"
+                name="STATUS"
                 type="checkbox"
                 class="flat-blue"
                 {{ (bool) $old ? 'checked' : '' }}

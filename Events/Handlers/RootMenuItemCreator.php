@@ -1,8 +1,10 @@
-<?php namespace Modules\Menu\Events\Handlers;
+<?php
 
-use Modules\Core\Contracts\Setting;
+namespace Modules\Menu\Events\Handlers;
+
 use Modules\Menu\Events\MenuWasCreated;
 use Modules\Menu\Repositories\MenuItemRepository;
+use Modules\Setting\Contracts\Setting;
 
 class RootMenuItemCreator
 {
@@ -24,14 +26,14 @@ class RootMenuItemCreator
     public function handle(MenuWasCreated $event)
     {
         $data = [
-            'menu_id' => $event->menu->id,
-            'position' => 0,
-            'is_root' => true,
+            'MENU_ID' => $event->menu->ID,
+            'POSITION' => 0,
+            'IS_ROOT' => true,
         ];
 
-        foreach ($this->getEnabledLocales() as $locale) {
-            $data[$locale]['title'] = 'root';
-        }
+
+            $data ['TITLE'] = 'root';
+         
 
         $this->menuItem->create($data);
     }

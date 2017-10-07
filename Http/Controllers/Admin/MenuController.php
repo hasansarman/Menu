@@ -1,4 +1,6 @@
-<?php namespace Modules\Menu\Http\Controllers\Admin;
+<?php
+
+namespace Modules\Menu\Http\Controllers\Admin;
 
 use Modules\Core\Http\Controllers\Admin\AdminBaseController;
 use Modules\Menu\Entities\Menu;
@@ -50,16 +52,15 @@ class MenuController extends AdminBaseController
     {
         $this->menu->create($request->all());
 
-        flash(trans('menu::messages.menu created'));
-
-        return redirect()->route('admin.menu.menu.index');
+        return redirect()->route('admin.menu.menu.index')
+            ->withSuccess(trans('menu::messages.menu created'));
     }
 
     public function edit(Menu $menu)
     {
-        $menuItems = $this->menuItem->allRootsForMenu($menu->id);
+        $menuItems = $this->menuItem->allRootsForMenu($menu->ID);
 
-        $menuStructure = $this->menuRenderer->renderForMenu($menu->id, $menuItems->nest());
+        $menuStructure = $this->menuRenderer->renderForMenu($menu->ID, $menuItems->nest());
 
         return view('menu::admin.menus.edit', compact('menu', 'menuStructure'));
     }
@@ -68,17 +69,15 @@ class MenuController extends AdminBaseController
     {
         $this->menu->update($menu, $request->all());
 
-        flash(trans('menu::messages.menu updated'));
-
-        return redirect()->route('admin.menu.menu.index');
+        return redirect()->route('admin.menu.menu.index')
+            ->withSuccess(trans('menu::messages.menu updated'));
     }
 
     public function destroy(Menu $menu)
     {
         $this->menu->destroy($menu);
 
-        flash(trans('menu::messages.menu deleted'));
-
-        return redirect()->route('admin.menu.menu.index');
+        return redirect()->route('admin.menu.menu.index')
+            ->withSuccess(trans('menu::messages.menu deleted'));
     }
 }

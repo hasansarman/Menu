@@ -1,4 +1,6 @@
-<?php namespace Modules\Menu\Http\Requests;
+<?php
+
+namespace Modules\Menu\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -7,8 +9,8 @@ class CreateMenuRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'primary' => 'unique:menu__menus',
+            'NAME' => 'required',
+            'PRIMARY' => 'unique:menus',
         ];
     }
 

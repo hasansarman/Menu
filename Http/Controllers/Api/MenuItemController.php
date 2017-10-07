@@ -1,4 +1,6 @@
-<?php namespace Modules\Menu\Http\Controllers\Api;
+<?php
+
+namespace Modules\Menu\Http\Controllers\Api;
 
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Http\Request;
@@ -36,7 +38,7 @@ class MenuItemController extends Controller
     public function update(Request $request)
     {
         $this->cache->tags('menuItems')->flush();
-
+//print_r($request->all());
         $this->menuOrdener->handle($request->get('menu'));
     }
 

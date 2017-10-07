@@ -1,11 +1,13 @@
-<?php namespace Modules\Menu\Composers;
+<?php
+
+namespace Modules\Menu\Composers;
 
 use Modules\Menu\Entities\Menuitem as MenuitemEntity;
 use Modules\Menu\Repositories\MenuItemRepository;
 use Modules\Menu\Repositories\MenuRepository;
-use Pingpong\Menus\Builder;
-use Pingpong\Menus\Facades\Menu;
-use Pingpong\Menus\MenuItem;
+use Nwidart\Menus\Builder;
+use Nwidart\Menus\Facades\Menu;
+use Nwidart\Menus\MenuItem;
 
 class NavigationViewComposer
 {
@@ -27,8 +29,8 @@ class NavigationViewComposer
     public function compose()
     {
         foreach ($this->menu->all() as $menu) {
-            $menuTree = $this->menuItem->getTreeForMenu($menu->id);
-            Menu::create($menu->name, function (Builder $menu) use ($menuTree) {
+            $menuTree = $this->menuItem->getTreeForMenu($menu->ID);
+            Menu::create($menu->NAME, function (Builder $menu) use ($menuTree) {
                 foreach ($menuTree as $menuItem) {
                     $this->addItemToMenu($menuItem, $menu);
                 }
@@ -44,13 +46,13 @@ class NavigationViewComposer
     public function addItemToMenu(MenuitemEntity $item, Builder $menu)
     {
         if ($this->hasChildren($item)) {
-            $this->addChildrenToMenu($item->title, $item->items, $menu);
+            $this->addChildrenToMenu($item->TITLE, $item->items, $menu);
         } else {
-            $target = $item->uri ?: $item->url;
+            $target = $item->URI ?: $item->URL;
             $menu->url(
                 $target,
-                $item->title,
-                ['target' => $item->target]
+                $item->TITLE,
+                ['target' => $item->TARGET]
             );
         }
     }
@@ -79,10 +81,10 @@ class NavigationViewComposer
      */
     private function addSubItemToMenu(MenuitemEntity $child, MenuItem $sub)
     {
-        $sub->url($child->uri, $child->title);
+        $sub->url($child->URI, $child->TITLE);
 
         if ($this->hasChildren($child)) {
-            $this->addChildrenToMenu($child->title, $child->items, $sub);
+            $this->addChildrenToMenu($child->TITLE, $child->items, $sub);
         }
     }
 

@@ -1,29 +1,36 @@
-<?php namespace Modules\Menu\Entities;
+<?php
 
-use Dimsav\Translatable\Translatable;
+namespace Modules\Menu\Entities;
+
+
 use Illuminate\Database\Eloquent\Model;
 use TypiCMS\NestableTrait;
 
 class Menuitem extends Model
 {
-    use Translatable, NestableTrait;
+    use   NestableTrait;
 
-    public $translatedAttributes = ['title', 'uri', 'url', 'status'];
+    protected $primaryKey="ID";
+    const CREATED_AT = 'IDATE';
+    const UPDATED_AT = 'UDATE';
     protected $fillable = [
-        'menu_id',
-        'page_id',
-        'parent_id',
-        'position',
-        'target',
-        'module_name',
-        'title',
-        'uri',
-        'url',
-        'status',
-        'is_root',
-        'icon'
+        'MENU_ID',
+        'PAGE_ID',
+        'PARENT_ID',
+        'POSITION',
+        'TARGET',
+        'MODULE_NAME',
+        'TITLE',
+        'URI',
+        'URL',
+        'STATUS',
+        'IS_ROOT',
+        'ICON',
+        'LINK_TYPE',
+        'LOCALE',
+        'CLASS',
     ];
-    protected $table = 'menu__menuitems';
+    protected $table = 'menu_items';
 
     /**
      * For nested collection
@@ -34,7 +41,7 @@ class Menuitem extends Model
 
     public function menu()
     {
-        return $this->belongsTo('Modules\Menu\Entities\Menu');
+        return $this->belongsTo(Menu::class);
     }
 
     /**
@@ -43,7 +50,7 @@ class Menuitem extends Model
      */
     public function makeChildOf(Menuitem $rootItem)
     {
-        $this->parent_id = $rootItem->id;
+        $this->PARENT_ID = $rootItem->ID;
         $this->save();
     }
 
@@ -53,7 +60,7 @@ class Menuitem extends Model
      */
     public function isRoot()
     {
-        return (bool) $this->is_root;
+        return (bool) $this->IS_ROOT;
     }
 
     /**
@@ -62,6 +69,15 @@ class Menuitem extends Model
      */
     public function setPageIdAttribute($value)
     {
-        $this->attributes['page_id'] = ! empty($value) ? $value : null;
+        $this->attributes['PAGE_ID'] = ! empty($value) ? $value : null;
+    }
+
+    /**
+     * Check if parent_id is empty and returning null instead empty string
+     * @return number
+     */
+    public function setParentIdAttribute($value)
+    {
+        $this->attributes['PARENT_ID'] = ! empty($value) ? $value : null;
     }
 }

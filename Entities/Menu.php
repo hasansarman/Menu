@@ -1,20 +1,23 @@
-<?php namespace Modules\Menu\Entities;
+<?php
 
-use Dimsav\Translatable\Translatable;
+namespace Modules\Menu\Entities;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    use Translatable;
 
+  protected $primaryKey="ID";
+  const CREATED_AT = 'IDATE';
+  const UPDATED_AT = 'UDATE';
     protected $fillable = [
-        'name',
-        'title',
-        'status',
-        'primary',
+        'NAME',
+        'TITLE',
+        'STATUS',
+        'PRIMARY',
     ];
-    public $translatedAttributes = ['title', 'status'];
-    protected $table = 'menu__menus';
+
+    protected $table = 'menus';
 
     public function menuitems()
     {
